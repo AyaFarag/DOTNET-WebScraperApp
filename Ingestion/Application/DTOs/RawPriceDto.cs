@@ -8,9 +8,9 @@ namespace Ingestion.Application.DTOs
 {
     public class RawPriceDto
     {
-        public string ProductName { get; set; }
-        public string RawPrice { get; set; }
-        public string Source { get; set; }
+        public string ProductName { get; set; } = "";
+        public string RawPrice { get; set; } = "";
+        public string Source { get; set; } = "";
         public DateTime CollectedAt { get; set; }
     }
 }

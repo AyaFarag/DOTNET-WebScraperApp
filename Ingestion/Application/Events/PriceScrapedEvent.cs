@@ -10,8 +10,8 @@ namespace Ingestion.Application.Events
 {
     public class PriceScrapedEvent : BaseEvent
     {
-        public string ProductName { get; set; }
-        public string RawPrice { get; set; }
-        public string Source { get; set; }
+        public string ProductName { get; set; } = "";
+        public string RawPrice { get; set; } = "";
+        public string Source { get; set; } = "";
     }
 }

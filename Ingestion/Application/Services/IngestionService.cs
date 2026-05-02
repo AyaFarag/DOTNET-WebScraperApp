@@ -1,4 +1,5 @@
 ﻿using Ingestion.Application.CQRS.Query;
+using Ingestion.Application.DTOs;
 using Ingestion.Application.Events;
 using Ingestion.Application.Interfaces;
 using MediatR;
@@ -14,16 +15,19 @@ namespace Ingestion.Application.Services
     {
         
         private IMediator _mediator ;
+        private readonly IScraper _scraper;
 
-        public IngestionService( IMediator mediator)
+        public IngestionService(IScraper scraper, IMediator mediator)
         {
-            
+            _scraper = scraper;
             _mediator = mediator;
         }
 
-        public async Task RunScrapingAsync(ScrapePricesQuery query)
+        public async Task<List<RawPriceDto>> RunScrapingAsync()
         {
-            var data = await _mediator.Send(query);
+            // ScrapePricesQuery query
+            //var data = await _mediator.Send(query);
+            var data = await _scraper.ScrapeAsync();
 
             foreach (var item in data)
             {
@@ -34,6 +38,8 @@ namespace Ingestion.Application.Services
                     Source = item.Source
                 });
             }
+
+            return data;
         }
     }
 }

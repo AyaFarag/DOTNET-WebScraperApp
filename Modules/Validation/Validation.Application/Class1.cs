@@ -1,4 +1,4 @@
-﻿namespace Domain
+﻿namespace Validation.Application
 {
     public class Class1
     {

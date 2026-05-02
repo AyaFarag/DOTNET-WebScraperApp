@@ -1,5 +1,7 @@
 ﻿using Ingestion.Application.CQRS.Query;
 using Ingestion.Application.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Ingestion.Presentation.Endpoints
 {
@@ -9,8 +11,10 @@ namespace Ingestion.Presentation.Endpoints
         {
             app.MapPost("/ingestion/scrape", async (IngestionService service) =>
             {
-                await service.RunScrapingAsync(new ScrapePricesQuery());
-                return Results.Ok("Scraping completed");
+                //await service.RunScrapingAsync(new ScrapePricesQuery());
+
+                var data  = await service.RunScrapingAsync();
+                return data != null ? Results.Ok(data) : Results.Problem("Failed to scrape data");  
             });
         }
     }

@@ -1,5 +1,5 @@
-﻿using Application.Configurations;
-using DocumentFormat.OpenXml.Wordprocessing;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Ingestion.Application.Configurations;
 using Ingestion.Application.DTOs;
 using Ingestion.Application.Interfaces;
 using Microsoft.Extensions.Options;
@@ -19,6 +19,11 @@ namespace Ingestion.Infrastructure.Scraping
         {
             _options = options.Value;
         }
+
+        // Dynamic Pages
+        // Pagination
+        // Anti-Bot Reality
+
         public async Task<List<RawPriceDto>> ScrapeAsync()
         {
             var results = new List<RawPriceDto>();
@@ -31,7 +36,8 @@ namespace Ingestion.Infrastructure.Scraping
                     Headless = _options.Headless,
                     Timeout = _options.Timeout
                 });
-
+            var context = await browser.NewContextAsync();
+            await LoginAsync(context);
             foreach (var source in _options.Sources.Where(s => s.IsEnabled))
             {
                 IPage? page = null;
@@ -43,15 +49,15 @@ namespace Ingestion.Infrastructure.Scraping
                     // Important: set per-page timeout
                     page.SetDefaultTimeout(_options.Timeout);
                     page.SetDefaultNavigationTimeout(_options.Timeout);
-
+              
                     await page.GotoAsync(source.Url, new PageGotoOptions
                     {
                         WaitUntil = WaitUntilState.NetworkIdle
                     });
-
+                    
                     // Ensure DOM is ready
                     await page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
-
+                    
                     // Wait for product container
                     await page.WaitForSelectorAsync(source.ProductSelector);
 
@@ -94,7 +100,7 @@ namespace Ingestion.Infrastructure.Scraping
                     }
 
                     // polite delay (anti-blocking pattern)
-                    await page.WaitForTimeoutAsync(800);
+                    await page.WaitForTimeoutAsync(_options.Timeout);
                 }
                 catch (Exception ex)
                 {
@@ -111,6 +117,44 @@ namespace Ingestion.Infrastructure.Scraping
             await browser.CloseAsync();
 
             return results;
+        }
+
+
+        public static async Task LoginAsync(IBrowserContext context)
+        {
+            
+            var page = await context.NewPageAsync();
+            //page.SetDefaultTimeout(30000);
+            await page.GotoAsync(
+             "https://hostinger.titan.email/login/");
+
+            // email
+            await page.FillAsync(
+                "input[type='email']",
+                "ayafarag@denizey.net");
+
+            // password
+            await page.FillAsync(
+                "input[type='password']",
+                "8rU7nPyYzm8876T");
+
+            // login button
+            await page.ClickAsync("button[type='submit']");
+
+            await page.WaitForTimeoutAsync(5000);
+            // wait after login
+            await page.WaitForLoadStateAsync(
+                LoadState.NetworkIdle);
+
+            // optional:
+            // save session for reuse
+            await context.StorageStateAsync(
+                new BrowserContextStorageStateOptions
+                {
+                    Path = "auth.json"
+                });
+
+            Console.WriteLine("Logged in successfully");
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Configurations
+namespace Ingestion.Application.Configurations
 {
     public class ScraperOptions
     {
@@ -16,10 +16,10 @@ namespace Application.Configurations
 
     public class ScraperSource
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public bool IsEnabled { get; set; }
-        public string Url { get; set; }
-        public string ProductSelector { get; set; }
-        public string PriceSelector { get; set; }
+        public string Url { get; set; } = string.Empty;
+        public string ProductSelector { get; set; } = string.Empty;
+        public string PriceSelector { get; set; } = string.Empty;
     }
 }

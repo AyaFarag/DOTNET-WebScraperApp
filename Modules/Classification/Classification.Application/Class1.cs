@@ -1,4 +1,4 @@
-﻿namespace Application
+﻿namespace Classification.Application
 {
     public class Class1
     {

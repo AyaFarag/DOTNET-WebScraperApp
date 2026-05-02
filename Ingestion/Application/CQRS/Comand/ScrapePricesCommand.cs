@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.CQRS.Comand
 {
-    public class ScrapePricesCommand() : IRequest<Unit>
+    public class ScrapePricesCommand : IRequest<Unit>
     {
     }
 }

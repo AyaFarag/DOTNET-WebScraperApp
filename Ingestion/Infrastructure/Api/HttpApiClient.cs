@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Api
+namespace Ingestion.Infrastructure.Api
 {
     public class HttpApiClient
     {
