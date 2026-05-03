@@ -23,7 +23,7 @@ namespace Ingestion.Application.Services
             _mediator = mediator;
         }
 
-        public async Task<List<RawPriceDto>> RunScrapingAsync()
+        public async Task<HashSet<string>> RunScrapingAsync()
         {
             // ScrapePricesQuery query
             //var data = await _mediator.Send(query);
@@ -33,9 +33,9 @@ namespace Ingestion.Application.Services
             {
                 await _mediator.Publish(new PriceScrapedEvent
                 {
-                    ProductName = item.ProductName,
-                    RawPrice = item.RawPrice,
-                    Source = item.Source
+                  //  ProductName = item.ProductName,
+                  //  RawPrice = item.RawPrice,
+                  //  Source = item.Source
                 });
             }
 

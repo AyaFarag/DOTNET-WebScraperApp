@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ingestion.Application.CQRS.Query
 {
-    public class ScrapePricesQuery : IRequest<List<RawPriceDto>>
+    public class ScrapePricesQuery : IRequest<HashSet<string>>
     {
     }
 }

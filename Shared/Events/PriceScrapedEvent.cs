@@ -9,8 +9,8 @@ namespace Shared.Events
 {
     public class PriceScrapedEvent : INotification
     {
-        public string ProductName { get; set; }
-        public string RawPrice { get; set; }
-        public string Source { get; set; }
+        public string ProductName { get; set; } = "";
+        public string RawPrice { get; set; } = "";
+        public string Source { get; set; } = "";
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Ingestion.Application.CQRS.Query
 {
-    public class ScrapePricesQueryHandler : IRequestHandler<ScrapePricesQuery, List<RawPriceDto>>
+    public class ScrapePricesQueryHandler : IRequestHandler<ScrapePricesQuery, HashSet<string>>
     {
         private readonly IScraper _playwrightScraper;
         public ScrapePricesQueryHandler(IScraper scraper)
@@ -17,7 +17,7 @@ namespace Ingestion.Application.CQRS.Query
             _playwrightScraper = scraper;
         }
 
-        public async Task<List<RawPriceDto>> Handle(ScrapePricesQuery request, CancellationToken cancellationToken)
+        public async Task<HashSet<string>> Handle(ScrapePricesQuery request, CancellationToken cancellationToken)
         {
             var data = await _playwrightScraper.ScrapeAsync();
             return data;

@@ -9,6 +9,6 @@ namespace Ingestion.Application.Interfaces
 {
     public interface IScraper
     {
-        Task<List<RawPriceDto>> ScrapeAsync();
+        Task<HashSet<string>> ScrapeAsync();
     }
 }

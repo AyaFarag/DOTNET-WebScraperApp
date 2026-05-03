@@ -11,7 +11,8 @@ namespace Ingestion.Application.Events.Handler
     {
         public Task Handle(PriceScrapedEvent notification, CancellationToken ct)
         {
-            Console.WriteLine($"[EVENT RECEIVED] {notification.ProductName} - {notification.RawPrice}");
+            Console.WriteLine($"[EVENT RECEIVED] ");
+          //  Console.WriteLine($"[EVENT RECEIVED] {notification.ProductName} - {notification.RawPrice}");
             return Task.CompletedTask;
         }
     }
