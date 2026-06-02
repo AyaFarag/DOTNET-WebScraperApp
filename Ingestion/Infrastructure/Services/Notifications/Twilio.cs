@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ingestion.Infrastructure.Api
+namespace Infrastructure.Services.Notifications
 {
-    public class HttpApiClient
+    internal class Twilio
     {
     }
 }

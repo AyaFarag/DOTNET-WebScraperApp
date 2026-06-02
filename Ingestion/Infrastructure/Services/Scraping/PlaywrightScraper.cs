@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Ingestion.Infrastructure.Scraping
+namespace Infrastructure.Services.Scraping
 {
     public class PlaywrightScraper : IScraper
     {

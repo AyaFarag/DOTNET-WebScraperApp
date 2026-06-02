@@ -1,6 +1,6 @@
-﻿using Ingestion.Application.Interfaces;
+﻿using Infrastructure.Services.Scraping;
+using Ingestion.Application.Interfaces;
 using Ingestion.Application.Services;
-using Ingestion.Infrastructure.Scraping;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
