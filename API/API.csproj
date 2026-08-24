@@ -8,15 +8,17 @@
 
 
   <ItemGroup>
+	<PackageReference Include="Hangfire.AspNetCore" Version="1.8.24" />
+	<PackageReference Include="Hangfire.SqlServer" Version="1.8.24" />
 	<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.9" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.13" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.13">
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.19" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.19">
 		<PrivateAssets>all</PrivateAssets>
 		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
-	<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.13" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.13" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.13">
+	<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.19" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.19" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.19">
 		<PrivateAssets>all</PrivateAssets>
 		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
@@ -46,6 +48,13 @@
 	 <PackageReference Include="Microsoft.Playwright" Version="1.59.0" />
 	 <PackageReference Include="MediatR" Version="14.1.0" />
 	 <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\Ingestion\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Validation\Validation.Infrastructure\Validation.Infrastructure.csproj" />
+    <ProjectReference Include="..\Processing.Infrastructure\Processing.Infrastructure.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
 </Project>

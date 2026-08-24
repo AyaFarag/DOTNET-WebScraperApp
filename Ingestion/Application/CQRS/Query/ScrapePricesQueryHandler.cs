@@ -1,26 +1,24 @@
 ﻿using Ingestion.Application.DTOs;
-using Ingestion.Application.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Ingestion.Application.Interfaces;
 
 namespace Ingestion.Application.CQRS.Query
 {
-    public class ScrapePricesQueryHandler : IRequestHandler<ScrapePricesQuery, HashSet<string>>
+    public class ScrapePricesQueryHandler : IRequestHandler<ScrapePricesQuery, List<RawPriceDto>>
     {
-        private readonly IScraper _playwrightScraper;
-        public ScrapePricesQueryHandler(IScraper scraper)
+        private readonly IScraper _service;
+
+        public ScrapePricesQueryHandler(IScraper service)
         {
-            _playwrightScraper = scraper;
+            _service = service;
+            
         }
 
-        public async Task<HashSet<string>> Handle(ScrapePricesQuery request, CancellationToken cancellationToken)
+        public async Task<List<RawPriceDto>> Handle(ScrapePricesQuery request, CancellationToken cancellationToken)
         {
-            var data = await _playwrightScraper.ScrapeAsync();
-            return data;
+            var data = await _service.ScrapeAsync();
+               
+               return data;
         }
     }
 }

@@ -123,140 +123,143 @@ namespace Infrastructure.Services.Scraping
 
         #endregion
 
-        //public async Task<List<RawPriceDto>> ScrapeAsync()
-        //{
-        //    var results = new List<RawPriceDto>();
+        #region ScrapeAsync
 
-        //    using var playwright = await Playwright.CreateAsync();
+        
+        public async Task<List<RawPriceDto>> ScrapeAsync()
+        {
+           var results = new List<RawPriceDto>();
+
+           using var playwright = await Playwright.CreateAsync();
 
 
-        //    var browser = await playwright.Chromium.LaunchAsync(
-        //            new BrowserTypeLaunchOptions
-        //            {
-        //                Headless = false,
-        //                SlowMo = 500
-        //            });
-        //    // Shared browser context
-        //    var context = await browser.NewContextAsync();
+           var browser = await playwright.Chromium.LaunchAsync(
+                   new BrowserTypeLaunchOptions
+                   {
+                       Headless = false,
+                       SlowMo = 500
+                   });
+           // Shared browser context
+           var context = await browser.NewContextAsync();
 
         //    // -----------------------------
         //    // LOGIN
         //    // -----------------------------
         //    await LoginAsync(context);
 
-        //    foreach (var source in _options.Sources.Where(s => s.IsEnabled))
-        //    {
-        //        //if (source.Url == "https://hostinger.titan.email/mail") 
-        //        //{
+           foreach (var source in _options.Sources.Where(s => s.IsEnabled))
+           {
+              
+               IPage? page = null;
 
-        //        //}
-        //        IPage? page = null;
+               try
+               {
+                   page = await context.NewPageAsync();
 
-        //        try
-        //        {
-        //            page = await context.NewPageAsync();
+                   page.SetDefaultTimeout(_options.Timeout);
+                   page.SetDefaultNavigationTimeout(_options.Timeout);
 
-        //            page.SetDefaultTimeout(_options.Timeout);
-        //            page.SetDefaultNavigationTimeout(_options.Timeout);
+                   await page.GotoAsync(
+                       source.Url,
+                       new PageGotoOptions
+                       {
+                           WaitUntil = WaitUntilState.DOMContentLoaded,
+                       });
 
-        //            await page.GotoAsync(
-        //                source.Url,
-        //                new PageGotoOptions
-        //                {
-        //                    WaitUntil = WaitUntilState.DOMContentLoaded,
-        //                });
+                   await page.WaitForLoadStateAsync(
+                       LoadState.DOMContentLoaded);
 
-        //            await page.WaitForLoadStateAsync(
-        //                LoadState.DOMContentLoaded);
+                   // Wait for products container
+                   await page.WaitForSelectorAsync(
+                       source.ProductSelector);
 
-        //            // Wait for products container
-        //            await page.WaitForSelectorAsync(
-        //                source.ProductSelector);
+                   await ScrollThreadListAsync(page);
 
-        //            await ScrollThreadListAsync(page);
+                   await page.WaitForTimeoutAsync(3000);
 
-        //            await page.WaitForTimeoutAsync(3000);
+                   var productElements =
+                       await page.QuerySelectorAllAsync(
+                           source.ProductSelector);
 
-        //            var productElements =
-        //                await page.QuerySelectorAllAsync(
-        //                    source.ProductSelector);
+                   if (productElements == null ||
+                       productElements.Count == 0)
+                   {
+                       continue;
+                   }
 
-        //            if (productElements == null ||
-        //                productElements.Count == 0)
-        //            {
-        //                continue;
-        //            }
+                   foreach (var productEl in productElements)
+                   {
+                       try
+                       {
+                            //var id = await productEl.GetAttributeAsync("data-id");
+                            var name =
+                               (await productEl.TextContentAsync())
+                               ?.Trim();
+                        //    var email = await productEl.GetAttributeAsync("data-email");
 
-        //            foreach (var productEl in productElements)
-        //            {
-        //                try
-        //                {
-        //                    var name =
-        //                        (await productEl.TextContentAsync())
-        //                        ?.Trim();
-        //                    var email = await productEl.GetAttributeAsync("data-email");
+                           var priceEl =
+                              await productEl.QuerySelectorAsync(
+                                  source.PriceSelector);
 
-        //                    //var priceEl =
-        //                    //    await productEl.QuerySelectorAsync(
-        //                    //        source.PriceSelector);
+                           var price =
+                              priceEl != null
+                              ? (await priceEl.TextContentAsync())
+                                  ?.Trim()
+                              : null;
 
-        //                    //var price =
-        //                    //    priceEl != null
-        //                    //    ? (await priceEl.TextContentAsync())
-        //                    //        ?.Trim()
-        //                    //    : null;
+                           if (string.IsNullOrWhiteSpace(name) ||
+                              string.IsNullOrWhiteSpace(price))
+                           {
+                              continue;
+                           }
 
-        //                    //if (string.IsNullOrWhiteSpace(name) ||
-        //                    //    string.IsNullOrWhiteSpace(price))
-        //                    //{
-        //                    //    continue;
-        //                    //}
+                           results.Add(new RawPriceDto
+                           {
+                              ProductName = name,
+                              // Email = email,
+                              RawPrice = price,
+                              Source = source.Name,
+                              CollectedAt = DateTime.UtcNow
+                           });
+                       }
+                       catch (Exception ex)
+                       {
+                           Console.WriteLine(
+                               $"[PRODUCT ERROR] {ex.Message}");
 
-        //                    results.Add(new RawPriceDto
-        //                    {
-        //                       // ProductName = name,
-        //                        Email = email,
-        //                       // RawPrice = price,
-        //                       // Source = source.Name,
-        //                       // CollectedAt = DateTime.UtcNow
-        //                    });
-        //                }
-        //                catch (Exception ex)
-        //                {
-        //                    Console.WriteLine(
-        //                        $"[PRODUCT ERROR] {ex.Message}");
+                           continue;
+                       }
+                   }
 
-        //                    continue;
-        //                }
-        //            }
+                   // polite delay
+                   await page.WaitForTimeoutAsync(_options.Timeout);
+                   Console.WriteLine(productElements.Count);
+               }
+               catch (Exception ex)
+               {
+                   Console.WriteLine(
+                       $"[SCRAPER ERROR] Source: {source.Name}, Error: {ex.Message}");
+               }
+               finally
+               {
+                   if (page != null)
+                   {
+                       await page.CloseAsync();
+                   }
+               }
+           }
 
-        //            // polite delay
-        //            await page.WaitForTimeoutAsync(_options.Timeout);
-        //            Console.WriteLine(productElements.Count);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine(
-        //                $"[SCRAPER ERROR] Source: {source.Name}, Error: {ex.Message}");
-        //        }
-        //        finally
-        //        {
-        //            if (page != null)
-        //            {
-        //                await page.CloseAsync();
-        //            }
-        //        }
-        //    }
+           await browser.CloseAsync();
 
-        //    await browser.CloseAsync();
+           return results;
+        }
 
-        //    return results;
-        //}
+        #endregion
 
-
-        public async Task<HashSet<string>> ScrapeAsync()
+        #region  Email scrapper
+        public async Task<HashSet<string>> EmailScrapeAsync()
         {
-            var results = new List<RawPriceDto>();
+            var results = new List<EmailResponseDTO>();
             var uniqueEmails = new HashSet<string>();
             using var playwright = await Playwright.CreateAsync(); 
             
@@ -311,7 +314,7 @@ namespace Infrastructure.Services.Scraping
                             //}
 
                             uniqueEmails.Add(email); 
-                            results.Add(new RawPriceDto 
+                            results.Add(new EmailResponseDTO 
                             { 
                                 Email = email, 
                               //  ProductName = name 
@@ -353,7 +356,7 @@ namespace Infrastructure.Services.Scraping
            
             return uniqueEmails; 
         }
-
+        #endregion
 
         private async Task LoginAsync(IBrowserContext context)
         {
@@ -439,6 +442,15 @@ namespace Infrastructure.Services.Scraping
 
                 previousScrollTop = newScrollTop;
             }
+        }
+
+        // Not tested
+        private async Task Pagination()
+        {
+            //for (int i = 1; i <= 5; i++)
+            //{
+            //    await page.GotoAsync($"https://site.com/page={i}");
+            //}
         }
     }
 }

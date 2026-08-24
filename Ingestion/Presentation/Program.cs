@@ -1,10 +1,11 @@
 using DotNetEnv;
+using Hangfire;
+using Infrastructure.Persistence.Data;
+using Infrastructure.Services.BackgroundJobs;
 using Ingestion.Application.Configurations;
-using Ingestion.Application.Interfaces;
-using Ingestion.Application.Services;
 using Ingestion.Infrastructure.Configurations;  
-using Ingestion.Infrastructure.Scraping;
-using Ingestion.Presentation.Endpoints; 
+using Ingestion.Presentation.Endpoints;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 Env.Load();
@@ -25,7 +26,22 @@ builder.Services.Configure<ScraperOptions>(
 
 builder.Services.AddSwaggerGen();
 builder.Services.AddIngestionApplication();
-builder.Services.AddIngestionInfrastructure();
+builder.Services.AddIngestionInfrastructure(builder.Configuration);
+
+builder.Services.AddDbContext<IngestionDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddHangfire(config =>
+{
+    config.UseSimpleAssemblyNameTypeSerializer()
+          .UseRecommendedSerializerSettings()
+          .UseSqlServerStorage(
+              builder.Configuration.GetConnectionString(
+                  "DefaultConnection"));
+});
+
+builder.Services.AddHangfireServer();
 
 var app = builder.Build();
 //app.MapGet("/", () => "Hello World!");
@@ -34,4 +50,6 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.MapIngestionEndpoints();
 
+app.UseHangfireDashboard("/hangfire");
+OutboxJobRegistration.Register();
 app.Run();
