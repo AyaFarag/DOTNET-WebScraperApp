@@ -8,11 +8,11 @@ namespace Validation.Application.Rules
 {
     public sealed class DuplicatePriceRule : IValidationRule
     {
-        private readonly IRawPriceQueryReader _repository;
+        private readonly IRawPriceQueryReader<RawPrice> _repository;
 
         public string Name => "DuplicatePrice";
 
-        public DuplicatePriceRule(IRawPriceQueryReader repository)
+        public DuplicatePriceRule(IRawPriceQueryReader<RawPrice> repository)
         {
             _repository = repository;
         }

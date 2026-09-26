@@ -1,15 +1,12 @@
 using Ingestion.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Ingestion.Application.Services
 {
     public interface IIngestionService
     {
-        Task<List<RawPriceDto>> RunScrapingAsync();
+        Task<List<RawPriceDto>> ScrapeAsync(string source, CancellationToken cancellationToken);
+        Task<List<RawPriceDto>> RunScrapingAsync(CancellationToken cancellationToken);
 
         Task<HashSet<string>> RunEmailScrapingAsync();
     }

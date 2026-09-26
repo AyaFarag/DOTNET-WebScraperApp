@@ -12,5 +12,12 @@ namespace Ingestion.Application.DTOs
         public string RawPrice { get; set; } = "";
         public string Source { get; set; } = "";
         public DateTime CollectedAt { get; set; }
+        public string SourceUrl { get; set; } = null!;
+
+        public string? Currency { get; set; }
+
+        public string? RawData { get; set; }
     }
 }
+
+

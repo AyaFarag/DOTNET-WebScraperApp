@@ -31,9 +31,4 @@
 	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.13" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contracts\Events\Classification\" />
-    <Folder Include="Contracts\Events\Index\" />
-  </ItemGroup>
-
 </Project>

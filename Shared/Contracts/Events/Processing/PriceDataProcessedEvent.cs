@@ -7,6 +7,12 @@ namespace Shared.Contracts.Events.Processing
     Guid BatchId,
     int TotalRecords,
     int ProcessedRecords,
-    int FailedRecords
-) : INotification;
+    int FailedRecords) : INotification;
+
+
+    //public sealed record PriceDataProcessedEvent(
+    //Guid EventId,
+    //Guid BatchId) : INotification;
+
+
 }

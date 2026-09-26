@@ -4,7 +4,7 @@ using Validation.Domain.Entities;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    internal class OutBoxConfiguration : IEntityTypeConfiguration<OutboxMessage>
+    public class OutBoxConfiguration : IEntityTypeConfiguration<OutboxMessage>
     {
         public void Configure(EntityTypeBuilder<OutboxMessage> builder)
         {

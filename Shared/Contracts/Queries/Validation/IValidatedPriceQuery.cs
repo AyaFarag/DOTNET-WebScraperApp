@@ -2,8 +2,8 @@
 
 namespace Shared.Contracts.Queries.Validation
 {
-    public interface IValidatedPriceQuery
+    public interface IValidatedPriceQuery<Tsource>
     {
-        Task<IReadOnlyList<ValidatedPriceData>> GetValidPricesAsync(Guid batchId,CancellationToken cancellationToken);
+        Task<IReadOnlyList<Tsource>> GetValidPricesAsync(Guid batchId,CancellationToken cancellationToken);
     }
 }

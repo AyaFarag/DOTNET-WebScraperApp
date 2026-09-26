@@ -191,7 +191,8 @@ namespace Infrastructure.Services.Scraping
                    {
                        try
                        {
-                           var name =
+                            //var id = await productEl.GetAttributeAsync("data-id");
+                            var name =
                                (await productEl.TextContentAsync())
                                ?.Trim();
                         //    var email = await productEl.GetAttributeAsync("data-email");
@@ -446,10 +447,10 @@ namespace Infrastructure.Services.Scraping
         // Not tested
         private async Task Pagination()
         {
-            for (int i = 1; i <= 5; i++)
-            {
-                await page.GotoAsync($"https://site.com/page={i}");
-            }
+            //for (int i = 1; i <= 5; i++)
+            //{
+            //    await page.GotoAsync($"https://site.com/page={i}");
+            //}
         }
     }
 }

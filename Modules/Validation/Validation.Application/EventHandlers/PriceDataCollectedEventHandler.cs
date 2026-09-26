@@ -2,6 +2,7 @@
 using Shared.Contracts.Events.Ingestion;
 using Shared.Contracts.Events.Validation;
 using Shared.Contracts.Queries.Ingestion;
+using Shared.Domain;
 using System.Text.Json;
 using Validation.Application.Interfaces;
 using Validation.Application.Interfaces.Repository;
@@ -14,7 +15,7 @@ namespace Validation.Application.EventHandlers
     {
         private readonly IIdempotencyService _idempotencyService;
         private readonly IValidationService _validationService;
-        private readonly IRawPriceQueryReader _rawPriceRepository;
+        private readonly IRawPriceQueryReader<RawPrice> _rawPriceRepository;
         private readonly IValidationResultRepository _validationResultRepository;
         private readonly IOutboxRepository _outboxRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -22,7 +23,7 @@ namespace Validation.Application.EventHandlers
         public PriceDataCollectedEventHandler(
             IIdempotencyService idempotencyService,
             IValidationService validationService,
-            IRawPriceQueryReader rawPriceRepository,
+            IRawPriceQueryReader<RawPrice> rawPriceRepository,
             IValidationResultRepository validationResultRepository,
             IOutboxRepository outboxRepository,
             IUnitOfWork unitOfWork)
@@ -58,12 +59,6 @@ namespace Validation.Application.EventHandlers
 
                 // 4. Save validation results
 
-
-                // Where is ValidationResult save to DB
-                // Where is Validation Error save to DB
-                // Add ValidationResult entities here.
-                // The repository implementation can persist them
-
                 await _validationResultRepository.AddRangeAsync(validation.Results, cancellationToken);
 
                 // 5. Create next event
@@ -81,9 +76,7 @@ namespace Validation.Application.EventHandlers
                 var outboxMessage = new OutboxMessage(validatedEvent.EventId, nameof(PriceDataValidatedEvent),
                     JsonSerializer.Serialize(validatedEvent));
 
-                await _outboxRepository.AddAsync(
-                    outboxMessage,
-                    cancellationToken);
+                await _outboxRepository.AddAsync(outboxMessage,cancellationToken);
 
 
                 // 7. Mark consumed event
@@ -96,10 +89,9 @@ namespace Validation.Application.EventHandlers
             }
             catch (Exception ex)
             {
-                // Log the exception
-                // Consider using a logging framework like Serilog, NLog, or Microsoft.Extensions.Logging
+   
                 Console.WriteLine($"Error processing PriceDataCollectedEvent: {ex.Message}");
-                throw; // Rethrow the exception to ensure it can be handled by the calling context
+                throw; 
                 // Rolleback
             }
             

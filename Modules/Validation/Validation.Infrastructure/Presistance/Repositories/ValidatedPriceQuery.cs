@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Contracts.Events.Validation;
 using Shared.Contracts.Queries.Validation;
+using Validation.Application.DTOs;
 using Validation.Infrastructure.Presistance.Data;
 
 namespace Validation.Infrastructure.Presistance.Repositories
 {
-    public sealed class ValidatedPriceQuery : IValidatedPriceQuery
+    public sealed class ValidatedPriceQuery<T> : IValidatedPriceQuery<ValidatedPriceData>
     {
         private readonly ValidationDbContext _context;
 

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Shared.Contracts.Events.Ingestion;
+using Shared.Contracts.Events.Validation;
 using System.Text.Json;
 using Validation.Application.Interfaces;
 using Validation.Domain.Entities;
@@ -47,13 +48,13 @@ namespace Validation.Infrastructure.Presistance.BackgroundJobs
 
         private async Task PublishAsync(OutboxMessage message, CancellationToken cancellationToken)
         {
-            if (message.Type.Contains(nameof(PriceDataCollectedEvent)))
+            if (message.Type.Contains(nameof(PriceDataValidatedEvent)))
             {
-                var @event = JsonSerializer.Deserialize<PriceDataCollectedEvent>(message.Payload);
+                var @event = JsonSerializer.Deserialize<PriceDataValidatedEvent>(message.Payload);
 
                 if (@event is null)
                     throw new InvalidOperationException(
-                        "Unable to deserialize PriceDataCollectedEvent.");
+                        "Unable to deserialize PriceDataValidatedEvent.");
 
                 await _publisher.Publish(@event, cancellationToken);
             }

@@ -14,7 +14,7 @@ namespace Validation.Infrastructure.Configurations
 {
     public static class DependancyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddValidationInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             // Register your infrastructure services here
             // For example:
@@ -34,7 +34,9 @@ namespace Validation.Infrastructure.Configurations
             
             services.AddScoped<IOutboxRepository, OutboxRepository>();
             services.AddScoped<IValidationResultRepository, ValidationResultRepository>();
-            services.AddScoped<IValidatedPriceQuery, ValidatedPriceQuery>();
+         
+
+            services.AddScoped(typeof(IValidatedPriceQuery<>), typeof(ValidatedPriceQuery<>));
 
 
 

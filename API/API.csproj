@@ -8,6 +8,8 @@
 
 
   <ItemGroup>
+	<PackageReference Include="Asp.Versioning.Http" Version="8.1.1" />
+	<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
 	<PackageReference Include="Hangfire.AspNetCore" Version="1.8.24" />
 	<PackageReference Include="Hangfire.SqlServer" Version="1.8.24" />
 	<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.9" />
@@ -51,9 +53,13 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <ProjectReference Include="..\Ingestion\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Analytics\Analytics.Infrastructure\Analytics.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Classification\Classification.Infrastructure\Classification.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Indexing\Index.Infrastructure\Index.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Source\Source.Infrastructure\Source.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Validation\Validation.Infrastructure\Validation.Infrastructure.csproj" />
-    <ProjectReference Include="..\Processing.Infrastructure\Processing.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Ingestion\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Processing\Processing.Infrastructure\Processing.Infrastructure.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
