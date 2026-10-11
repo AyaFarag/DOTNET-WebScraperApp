@@ -1,10 +1,12 @@
 ﻿using Analytics.Application.Events;
-using Analytics.Application.Interfaces.AI.Repository;
+using Analytics.Application.Interfaces.AI.PriceSnapshotSearch;
 using Analytics.Application.Interfaces.Repositories;
 using System.Text.Json;
 
 namespace Analytics.Application.EventHandler;
 
+
+// Search ????
 public sealed class PriceSnapshotSearchIndexHandler
 {
     private readonly IPriceSnapshotRepository _repository;

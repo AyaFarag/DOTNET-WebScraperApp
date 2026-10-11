@@ -2,6 +2,8 @@
 {
     public sealed record PriceSnapshotSearchRequest
     {
+        public string? SearchText { get; init; }
+
         public string? ProductKey { get; init; }
 
         public string? ProductName { get; init; }
@@ -22,8 +24,12 @@
 
         public DateTime? To { get; init; }
 
-        public int Page { get; init; } = 1;
+        public string? SortBy { get; init; }
 
-        public int PageSize { get; init; } = 20;
+        public bool Descending { get; init; }
+
+        public int Skip { get; init; }
+
+        public int Take { get; init; }
     }
 }

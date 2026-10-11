@@ -1,10 +1,5 @@
 ﻿using Analytics.Application.DTOs.AI.Search;
-using Analytics.Application.Interfaces.AI.Validator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Analytics.Application.Interfaces.AI.SearchQuery;
 
 namespace Analytics.Application.Services.AI
 {
@@ -37,8 +32,6 @@ namespace Analytics.Application.Services.AI
 
                 ProductKey = plan.ProductKey,
 
-                ProductName = plan.ProductName,
-
                 Brand = plan.Brand,
 
                 CategoryCode = plan.CategoryCode,
@@ -50,10 +43,6 @@ namespace Analytics.Application.Services.AI
                 MinimumPrice = plan.MinimumPrice,
 
                 MaximumPrice = plan.MaximumPrice,
-
-                SortBy = plan.SortBy,
-
-                SortDirection = plan.SortDirection,
 
                 Page = plan.Page,
 

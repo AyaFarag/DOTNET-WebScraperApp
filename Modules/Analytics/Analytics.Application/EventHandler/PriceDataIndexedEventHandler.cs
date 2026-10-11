@@ -1,5 +1,6 @@
 ﻿using Analytics.Application.DTOs;
-using Analytics.Application.Interfaces;
+using Analytics.Application.Interfaces.Anomalies.Service;
+using Analytics.Application.Interfaces.PriceAnalytics.Service;
 using Analytics.Application.Interfaces.Repositories;
 using Analytics.Domain.Entities;
 using MediatR;
@@ -40,12 +41,13 @@ namespace Analytics.Application.EventHandler
                 return;
             }
       
+            var execution = new AnalyticsExecution(notification.BatchId);
 
             await _analyticsService.CreatePriceSnapshotsAsync(notification.BatchId,cancellationToken); // including get index products reader , prepare snapshots , addRange snapshot to the db save changes
 
             await _anomalyDetectionService.DetectBatchAsync(notification.BatchId,cancellationToken); // include get snapshots by batch id , foreach them , in each interstion get historicalPrices , detect anomaly prices , prepare anomaly entity and save changes to db
 
-
+            execution.Complete(productsProcessed: 0, snapshotsCreated: 0, anomaliesDetected: 0); // update execution status to completed and save changes to db
 
             var analyticsEvent = new AnalyticsCompletedEvent(
                 Guid.NewGuid(),
@@ -62,6 +64,10 @@ namespace Analytics.Application.EventHandler
                 cancellationToken);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            //Create execution
+            //Update execution
+            //Complete execution
         }
     }
 }

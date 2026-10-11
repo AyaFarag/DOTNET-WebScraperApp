@@ -1,4 +1,4 @@
-﻿using Analytics.Application.Interfaces.AI.Repository;
+﻿using Analytics.Application.Interfaces.AI.AnomalyExplanation;
 using Analytics.Domain.Entities;
 using Analytics.Infrastructure.Persistence.Data;
 using Microsoft.EntityFrameworkCore;

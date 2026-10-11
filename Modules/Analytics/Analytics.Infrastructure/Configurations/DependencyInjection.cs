@@ -1,6 +1,12 @@
-﻿using Analytics.Application.Interfaces.AI.Agent;
-using Analytics.Application.Interfaces.AI.Repository;
+﻿using Analytics.Application.Interfaces.AI.AnalyticsSearch;
+using Analytics.Application.Interfaces.AI.AnomalyExplanation;
+using Analytics.Application.Interfaces.AI.PriceSnapshotSearch;
+using Analytics.Application.Interfaces.AI.SearchQuery;
+using Analytics.Application.Interfaces.Anomalies.Repository;
+using Analytics.Application.Interfaces.PriceAnalytics.Repository;
+using Analytics.Application.Interfaces.PriceIndices.Repository;
 using Analytics.Application.Interfaces.Repositories;
+using Analytics.Application.Interfaces.Weights.Repository;
 using Analytics.Infrastructure.Persistence.Repositories;
 using Analytics.Infrastructure.Persistence.Repositories.AI.Agent;
 using Analytics.Infrastructure.Persistence.Repositories.AI.Repository;
@@ -36,7 +42,21 @@ namespace Analytics.Infrastructure.Configurations
 
             services.AddScoped<IPriceSnapshotSearchIndexer, AzurePriceSnapshotSearchIndexer>();
             services.AddSingleton<IPriceSnapshotSearchIndexInitializer, PriceSnapshotSearchIndexInitializer>();
+            services.AddScoped<IPriceRelativeRepository, PriceRelativeRepository>();
+            services.AddScoped<IPriceWeightRepository,PriceWeightRepository>();
+            services.AddScoped<IWeightedPriceRepository, WeightedPriceRepository>();
+            services.AddScoped<ICategoryIndexRepository,CategoryIndexRepository>();
+            services.AddScoped<ILaspeyresIndexRepository, LaspeyresIndexRepository>();
+            services.AddScoped<IPaascheIndexRepository, PaascheIndexRepository>();
+            services.AddScoped<IFisherIndexRepository, FisherIndexRepository>();
+            services.AddScoped<ICpiWeightRepository, CpiWeightRepository>();
+            services.AddScoped<IConsumerPriceIndexRepository, ConsumerPriceIndexRepository>();
+            services.AddScoped<IPpiWeightRepository, PpiWeightRepository>();
+            services.AddScoped<IProducerPriceIndexRepository, ProducerPriceIndexRepository>();
 
+            services.AddScoped<IAnalyticsSearchQueryAgent, AnalyticsSearchAgent>();
+            services.AddScoped<IPriceSnapshotSearchAgent, PriceSnapshotSearchAgent>();
+            services.AddScoped<IPriceSnapshotSearchReader, AzurePriceSnapshotSearchReader>();
 
 
             services.Configure<AzureSearchOptions>(
@@ -90,6 +110,22 @@ namespace Analytics.Infrastructure.Configurations
                 return new OpenAIChatCompletionService(
                     modelId: model,
                     apiKey: apiKey);
+            });
+
+
+            var azureSearchOptions = configuration
+                    .GetSection(AzureSearchOptions.SectionName)
+                    .Get<AzureSearchOptions>()
+                ?? throw new InvalidOperationException(
+                    "AzureSearch configuration is missing.");
+
+            services.AddSingleton<SearchClient>(sp =>
+            {
+                return new SearchClient(
+                    new Uri(azureSearchOptions.Endpoint),
+                    azureSearchOptions.PriceSnapshotIndexName,
+                    new AzureKeyCredential(
+                        azureSearchOptions.ApiKey));
             });
 
             return services;

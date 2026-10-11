@@ -1,5 +1,5 @@
 ﻿using Analytics.Application.DTOs;
-using Analytics.Application.Interfaces;
+using Analytics.Application.Interfaces.PriceAnalytics.Service;
 using MediatR;
 
 namespace Analytics.Application.CQRS.MarketAnalysis.Queries

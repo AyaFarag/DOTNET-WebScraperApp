@@ -4,7 +4,7 @@ using System.Text.Json;
 using Analytics.Infrastructure.Persistence.Repositories.AI.Prompt;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Analytics.Application.DTOs.AI.AnomalyExplanation;
-using Analytics.Application.Interfaces.AI.Agent;
+using Analytics.Application.Interfaces.AI.AnomalyExplanation;
 
 namespace Analytics.Infrastructure.Persistence.Repositories.AI.Agent
 {

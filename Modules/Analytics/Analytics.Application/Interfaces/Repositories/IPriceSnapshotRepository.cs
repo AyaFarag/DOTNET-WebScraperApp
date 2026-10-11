@@ -22,5 +22,20 @@ namespace Analytics.Application.Interfaces.Repositories
         Task<IReadOnlyCollection<PriceSnapshot>> GetProductHistoryAsync(string productKey,DateTime from,DateTime to,string? source,string? currency, CancellationToken cancellationToken);
 
         Task<IReadOnlyCollection<PriceSnapshot>> GetLatestPricesByProductAsync(string productKey,string? currency,CancellationToken cancellationToken);
+
+        Task<IReadOnlyCollection<PriceSnapshot>>
+            GetAsync(
+                string? categoryCode,
+                string? source,
+                string currency,
+                DateTime from,
+                DateTime to,
+                CancellationToken cancellationToken);
+        Task<PriceSnapshot?> GetLatestAtOrBeforeAsync(
+            string productKey,
+            DateTime date,
+            string? source,
+            string currency,
+            CancellationToken cancellationToken);
     }
 }

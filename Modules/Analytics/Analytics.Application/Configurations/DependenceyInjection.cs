@@ -1,9 +1,16 @@
-﻿using Analytics.Application.Interfaces;
-using Analytics.Application.Interfaces.AI.Service;
-using Analytics.Application.Interfaces.AI.Validator;
+﻿using Analytics.Application.Interfaces.AI.AnalyticsSearch;
+using Analytics.Application.Interfaces.AI.AnomalyExplanation;
+using Analytics.Application.Interfaces.AI.SearchQuery;
+using Analytics.Application.Interfaces.Anomalies.Service;
+using Analytics.Application.Interfaces.PriceAnalytics.Service;
+using Analytics.Application.Interfaces.PriceIndices.Service;
+using Analytics.Application.Interfaces.Weights.Service;
 using Analytics.Application.Mapper.Execution;
-using Analytics.Application.Services;
 using Analytics.Application.Services.AI;
+using Analytics.Application.Services.Anomalies;
+using Analytics.Application.Services.PriceAnalytics;
+using Analytics.Application.Services.PriceIndices;
+using Analytics.Application.Services.Weights;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Analytics.Application.Configurations
@@ -23,6 +30,19 @@ namespace Analytics.Application.Configurations
             services.AddScoped<IAnomalyExplanationService, AnomalyExplanationService>();
             services.AddScoped<ISearchQueryValidator,SearchQueryValidator>();
             services.AddScoped<INaturalLanguageSearchService,NaturalLanguageSearchService>();
+            services.AddScoped<IPriceRelativeService,PriceRelativeService>();
+            services.AddScoped<IPriceWeightService,PriceWeightService>();
+            services.AddScoped<IWeightedPriceService,WeightedPriceService>();
+            services.AddScoped<ICategoryIndexService, CategoryIndexService>();
+            services.AddScoped<ILaspeyresIndexService, LaspeyresIndexService>();
+            services.AddScoped<IPaascheIndexService, PaascheIndexService>();
+            services.AddScoped<IFisherIndexService, FisherIndexService>();
+            services.AddScoped<ICpiWeightService, CpiWeightService>();
+            services.AddScoped<IConsumerPriceIndexService, ConsumerPriceIndexService>();
+            services.AddScoped<IPpiWeightService,PpiWeightService>();
+            services.AddScoped<IProducerPriceIndexService,ProducerPriceIndexService>();
+
+            services.AddScoped<IAnalyticsSearchService, AnalyticsSearchService>();
 
             return services;
         }

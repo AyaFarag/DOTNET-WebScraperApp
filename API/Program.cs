@@ -1,9 +1,8 @@
-using Analytics.Application.Interfaces.AI.Repository;
+using Analytics.Application.Interfaces.AI.PriceSnapshotSearch;
 using API.Endpoints;
 using API.Scenario.Configurations;
 using API.Scenario.Endpoint;
 using Asp.Versioning;
-using Asp.Versioning.Conventions;
 using Classification.Application.Configuration;
 using Classification.Infrastructure.Configuration;
 using Hangfire;

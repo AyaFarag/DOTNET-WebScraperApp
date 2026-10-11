@@ -1,4 +1,4 @@
-﻿using Analytics.Application.Interfaces.AI.Service;
+﻿using Analytics.Application.Interfaces.AI.AnomalyExplanation;
 using MediatR;
 using Shared.Contracts.Events.Analytics;
 

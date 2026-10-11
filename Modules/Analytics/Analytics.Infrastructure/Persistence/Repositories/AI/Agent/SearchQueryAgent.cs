@@ -1,5 +1,5 @@
 ﻿using Analytics.Application.DTOs.AI.Search;
-using Analytics.Application.Interfaces.AI.Agent;
+using Analytics.Application.Interfaces.AI.SearchQuery;
 using Analytics.Infrastructure.Persistence.Repositories.AI.Prompt;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;

@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Analytics.Application.DTOs
+{
+    public sealed record ConsumerPriceIndexDto
+    {
+        public string Currency { get; init; } = string.Empty;
+
+        public decimal BaseBasketValue { get; init; }
+
+        public decimal CurrentBasketValue { get; init; }
+
+        public decimal IndexValue { get; init; }
+
+        public decimal? ChangePercentage { get; init; }
+
+        public DateTime BaseDate { get; init; }
+
+        public DateTime CurrentDate { get; init; }
+    }
+}

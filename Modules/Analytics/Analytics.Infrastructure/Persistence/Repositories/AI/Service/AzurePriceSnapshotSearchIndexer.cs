@@ -1,5 +1,5 @@
 ﻿using Analytics.Application.DTOs.AI.Search;
-using Analytics.Application.Interfaces.AI.Repository;
+using Analytics.Application.Interfaces.AI.PriceSnapshotSearch;
 using Analytics.Domain.Entities;
 using Azure.Search.Documents;
 

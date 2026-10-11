@@ -1,5 +1,5 @@
 ﻿using Analytics.Application.DTOs;
-using Analytics.Application.Interfaces.Repositories;
+using Analytics.Application.Interfaces.PriceAnalytics.Repository;
 using Analytics.Domain.Entities;
 using Analytics.Infrastructure.Persistence.Data;
 using Microsoft.EntityFrameworkCore;

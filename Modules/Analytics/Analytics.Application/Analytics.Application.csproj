@@ -18,6 +18,11 @@
 
   <ItemGroup>
     <Folder Include="CQRS\NewFolder\" />
+    <Folder Include="Interfaces\EconomicIndicators\Repository\CPI\" />
+    <Folder Include="Interfaces\EconomicIndicators\Repository\PPI\" />
+    <Folder Include="Interfaces\EconomicIndicators\Service\CPI\" />
+    <Folder Include="Interfaces\EconomicIndicators\Service\PPI\" />
+    <Folder Include="Services\EconomicIndicators\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿using Analytics.Application.Interfaces.AI.Repository;
+﻿using Analytics.Application.Interfaces.AI.PriceSnapshotSearch;
 using Analytics.Infrastructure.Configurations;
 using Azure.Search.Documents.Indexes;
 using Microsoft.Extensions.Options;

@@ -151,5 +151,53 @@ namespace Analytics.Infrastructure.Persistence.Repositories
 
 
         }
+
+        public async Task<IReadOnlyCollection<PriceSnapshot>> GetAsync(
+            string? categoryCode,
+            string? source,
+            string currency,
+            DateTime from,
+            DateTime to,
+            CancellationToken cancellationToken)
+            {
+                return await _context.PriceSnapshots
+                    .AsNoTracking()
+                    .Where(
+                        x =>
+                            x.Currency == currency &&
+                            x.CollectedAt >= from &&
+                            x.CollectedAt <= to &&
+                            (categoryCode == null ||
+                             x.CategoryCode == categoryCode) &&
+                            (source == null ||
+                             x.Source == source))
+                    .OrderBy(x => x.ProductKey)
+                    .ThenBy(x => x.CollectedAt)
+                    .ToListAsync(cancellationToken);
+        }
+
+        public async Task<PriceSnapshot?> GetLatestAtOrBeforeAsync(
+        string productKey,
+        DateTime date,
+        string? source,
+        string currency,
+        CancellationToken cancellationToken)
+        {
+            var query = _context.PriceSnapshots
+                .Where(x =>
+                    x.ProductKey == productKey &&
+                    x.Currency == currency &&
+                    x.CollectedAt <= date);
+
+            if (!string.IsNullOrWhiteSpace(source))
+            {
+                query = query.Where(
+                    x => x.Source == source);
+            }
+
+            return await query
+                .OrderByDescending(x => x.CollectedAt)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }

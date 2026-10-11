@@ -1,8 +1,7 @@
 ﻿using Analytics.Application.DTOs.AI;
-using Analytics.Application.Interfaces.AI.Agent;
-using Analytics.Application.Interfaces.AI.Repository;
-using Analytics.Application.Interfaces.AI.Service;
-using Analytics.Application.Interfaces.Repositories;
+using Analytics.Application.DTOs.AI.AnomalyExplanation;
+using Analytics.Application.Interfaces.AI.AnomalyExplanation;
+using Analytics.Application.Interfaces.Anomalies.Repository;
 using Analytics.Domain.Entities;
 
 namespace Analytics.Application.Services.AI
